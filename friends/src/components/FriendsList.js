@@ -20,11 +20,11 @@ class FriendsList extends React.Component {
 
     getData = () => {
         axiosWithAuth()
-        .get('http://localhost:5000/api/friends')
+        .get('/api/friends')
         .then(res => {
-            console.log(res)
+            console.log(res, ' response from getData')
             this.setState({
-                friends: res.data.friends
+                friends: res.data
             })
         })
         .catch(err => {
@@ -33,9 +33,17 @@ class FriendsList extends React.Component {
     }
 
     render() {
+        // return <p> Friends go Here!</p>
         return (
-            <h1>FriendsList here</h1>
-
+            this.state.friends.map(friend => (
+                <div className='friend-card'>
+                    <h1>{friend.name}</h1>
+                    <p>Age: {friend.age}</p>
+                    <p>Email: {friend.email}</p>
+                </div>
+            ))
         )
     }
 }
+
+export default FriendsList

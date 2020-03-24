@@ -1,5 +1,12 @@
 import React from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import FriendsForm from './FriendsForm';
+import styled from 'styled-components';
+
+const StyledCard = styled.div `
+    border: 5px solid black;
+    margin: 2%;
+    `
 
 class FriendsList extends React.Component {
 
@@ -35,13 +42,16 @@ class FriendsList extends React.Component {
     render() {
         // return <p> Friends go Here!</p>
         return (
-            this.state.friends.map(friend => (
-                <div className='friend-card'>
-                    <h1>{friend.name}</h1>
-                    <p>Age: {friend.age}</p>
-                    <p>Email: {friend.email}</p>
-                </div>
-            ))
+            <div>
+                <FriendsForm />
+                {this.state.friends.map(friend => (
+                    <StyledCard className='friend-card'>
+                        <h1>{friend.name}</h1>
+                        <p>Age: {friend.age}</p>
+                        <p>Email: {friend.email}</p>
+                    </StyledCard>
+                ))}
+            </div>
         )
     }
 }

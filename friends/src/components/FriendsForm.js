@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const FriendsForm = props => {
 
@@ -12,15 +13,31 @@ const FriendsForm = props => {
         setCard({...card, [e.target.name]: e.target.value })
     };
 
+    const addFriend = newCard => {
+        console.log(newCard)
+        axiosWithAuth()
+        .post(newCard)
+    }
+
+    const submitForm = e => {
+        e.preventDefault();
+        addFriend(card)
+        setCard({
+          name: "",
+          age: "",
+          email: "",
+        });
+      }
+
     return (
         <div>
-            <form>
+            <form onSubmit={submitForm}>
                 <label htmlFor='name'>Name:
                 <input
                     type='text'
                     name='name'
                     value={card.name}
-                    // onChange={}
+                    onChange={handleChanges}
                 />
                 </label>
                 <label htmlFor='age'>Age:
@@ -28,7 +45,7 @@ const FriendsForm = props => {
                     type='text'
                     name='age'
                     value={card.age}
-                    // onChange={}
+                    onChange={handleChanges}
                 />
                 </label>
                 <label htmlFor='email'>Email:
@@ -36,9 +53,10 @@ const FriendsForm = props => {
                     type='email'
                     name='email'
                     value={card.email}
-                    // onChange={}
+                    onChange={handleChanges}
                 />
                 </label>
+                <button>Submit</button>
             </form>
         </div>
     )

@@ -25,6 +25,12 @@ class FriendsList extends React.Component {
         this.getData();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.friends !== this.state.friends) {
+            console.log('it updated!')
+        }
+    }
+
     getData = () => {
         axiosWithAuth()
         .get('/api/friends')
@@ -35,15 +41,14 @@ class FriendsList extends React.Component {
             })
         })
         .catch(err => {
-            console.log(err.resposne)
+            console.log(err.response)
         })
     }
 
     render() {
-        // return <p> Friends go Here!</p>
         return (
             <div>
-                <FriendsForm />
+                <FriendsForm friends={this.state.friends}/>
                 {this.state.friends.map(friend => (
                     <StyledCard className='friend-card'>
                         <h1>{friend.name}</h1>

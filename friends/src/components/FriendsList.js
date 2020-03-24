@@ -50,7 +50,7 @@ class FriendsList extends React.Component {
             <div>
                 <FriendsForm friends={this.state.friends}/>
                 {this.state.friends.map(friend => (
-                    <StyledCard className='friend-card'>
+                    <StyledCard className='friend-card' key={friend.id}>
                         <h1>{friend.name}</h1>
                         <p>Age: {friend.age}</p>
                         <p>Email: {friend.email}</p>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { newFriend } from '../actions/actions';
+import { connect } from 'react-redux';
 
 const FriendsForm = props => {
 
@@ -13,21 +14,16 @@ const FriendsForm = props => {
         setCard({...card, [e.target.name]: e.target.value })
     };
 
-    const addFriend = newCard => {
-        console.log(newCard)
-        axiosWithAuth()
-        .post(newCard)
-    }
 
     const submitForm = e => {
         e.preventDefault();
-        addFriend(card)
+        props.newFriend(card);
         setCard({
           name: "",
           age: "",
           email: "",
         });
-      }
+    }
 
     return (
         <div>
@@ -62,4 +58,11 @@ const FriendsForm = props => {
     )
 }
 
-export default FriendsForm
+// getting state using connect (state is in store)
+const mapStateToProps = state => {
+    return {
+        friends: state.friends
+    }
+}
+// getData is from action file and is placed in the position of mapDispatchToProps
+export default connect(mapStateToProps, {newFriend}) (FriendsForm);

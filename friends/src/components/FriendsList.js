@@ -1,5 +1,6 @@
-import React from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getData, newFriend } from '../actions/actions';
 import FriendsForm from './FriendsForm';
 import styled from 'styled-components';
 
@@ -8,57 +9,33 @@ const StyledCard = styled.div `
     margin: 2%;
     `
 
-class FriendsList extends React.Component {
+const FriendsList = props => {
 
-    state = {
-        friends: [
-            {
-                id: 0,
-                name: '',
-                age: 0,
-                email: ''
-            }
-        ]
-    }
+    useEffect(  () => {
+        props.getData()
+    }, [])
 
-    componentDidMount() {
-        this.getData();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.friends !== this.state.friends) {
-            console.log('it updated!')
-        }
-    }
-
-    getData = () => {
-        axiosWithAuth()
-        .get('/api/friends')
-        .then(res => {
-            console.log(res, ' response from getData')
-            this.setState({
-                friends: res.data
-            })
-        })
-        .catch(err => {
-            console.log(err.response)
-        })
-    }
-
-    render() {
-        return (
-            <div>
-                <FriendsForm friends={this.state.friends}/>
-                {this.state.friends.map(friend => (
-                    <StyledCard className='friend-card' key={friend.id}>
-                        <h1>{friend.name}</h1>
-                        <p>Age: {friend.age}</p>
-                        <p>Email: {friend.email}</p>
-                    </StyledCard>
-                ))}
-            </div>
-        )
-    }
+    return (
+        <div>
+            <FriendsForm friends={props.friends}/>
+            {props.friends.map(friend => (
+                <StyledCard className='friend-card' key={friend.id}>
+                    <h1>{friend.name}</h1>
+                    <p>Age: {friend.age}</p>
+                    <p>Email: {friend.email}</p>
+                </StyledCard>
+            ))}
+        </div>
+    )
+    
 }
 
-export default FriendsList
+
+// getting state using connect (state is in store)
+const mapStateToProps = state => {
+    return {
+        friends: state.friends
+    }
+}
+// getData is from action file and is placed in the position of mapDispatchToProps
+export default connect(mapStateToProps, {getData, newFriend}) (FriendsList);
